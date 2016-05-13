@@ -1,3 +1,7 @@
+# facter\_cacheable
+
+| [![Build Status](https://travis-ci.org/waveclaw/puppet-facter_cacheable.svg?branch=master)](https://travis-ci.org/waveclaw/puppet-facter_cacheable) | [![Code Climate](https://codeclimate.com/github/waveclaw/puppet-facter_cacheable/badges/gpa.svg)](https://codeclimate.com/github/waveclaw/puppet-facter_cacheable) | [![Test Coverage](https://codeclimate.com/github/waveclaw/puppet-facter_cacheable/badges/coverage.svg)](https://codeclimate.com/github/waveclaw/puppet-facter_cacheable/coverage) |
+
 #### Table of Contents
 
 1. [Overview](#overview)
