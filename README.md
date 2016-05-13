@@ -86,7 +86,7 @@ require 'puppet/util/facter_cachable'
 
 Facter.add(:my_custom_fact) do
   confine do
-    Puppet.feature.facter_cacheable?
+    Puppet.features.facter_cacheable?
   end
   setcode do
     # 24 * 3600 = 1 day of seconds
