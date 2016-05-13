@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "JD Powell <waveclaw@hotmail.com>",
   "summary": "Provide a Cache for Facter facts",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/waveclaw/puppet-facter_cacheable",
   "project_page": "https://github.com/waveclaw/puppet-facter_cacheable",
   "issues_url": "https://github.com/waveclaw/puppet-facter_cacheable/issues",
