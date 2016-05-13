@@ -1,3 +1,4 @@
-YYYY-MM-DD Release 0.1.0
-- something you did
-- something else you did
+2016-05-13 Release 0.1.0
+- fork module from subscription_manager
+- setup travis CI and code climate testing
+- refactor into Puppet feature
