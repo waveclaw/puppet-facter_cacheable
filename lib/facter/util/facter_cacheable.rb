@@ -46,20 +46,20 @@ EOF
              cache = nil
              cache_time = Time.at(0)
          end
-       end
-       if ! cache || (Time.now - cache_time) > ttl
+      end
+      if ! cache || (Time.now - cache_time) > ttl
          cache = nil
-       end
-       cache
-     end
+      end
+      cache
+    end
 
-     # Write out a cache of data
-     # @param key string The identifier for the data
-     # @param ttl integer Time-to-live in seconds which defauls to 1 hr (3600)
-     # @param source string Fully-qualified path to altnerative YAML file
-     # @return [object] Cached value (hash, string, array, number, etc)
-     # @api public
-     def cache(key, value, source = nil)
+    # Write out a cache of data
+    # @param key string The identifier for the data
+    # @param ttl integer Time-to-live in seconds which defauls to 1 hr (3600)
+    # @param source string Fully-qualified path to altnerative YAML file
+    # @return [object] Cached value (hash, string, array, number, etc)
+    # @api public
+    def cache(key, value, source = nil)
        if key && value
          mycache = get_cache(key, source)
          cache_file = mycache[:file]
@@ -74,35 +74,35 @@ EOF
            out.close()
          rescue Exception => e
            Facter.debug("#{e.backtrace[0]}: #{$!}.")
-           cache = nil
          end
        end
-     end
+    end
 
-     # find a source
-     # @param key [symbol] The identifier to use
-     # @return file [string, string] The cachefile location
-     # @api private
-     def get_cache(key, source)
-     if ! source
-       cache_dir = '/etc/facter/facts.d'
-       if Puppet.features.external_facts?
-         for dir in Facter.search_external_path
-           # the plugin facts directory in /var/lib is cleaned each run
-           if (File.exist?(dir)) #and
-             #dir != '/var/lib/puppet/facts.d' and
-             #dir != '/opt/puppetlabs/puppet/cache/facts.d/') # PE 2015 location
-             cache_dir = dir
-             break
+    # find a source
+    # @param key [symbol] The identifier to use
+    # @return file [string, string] The cachefile location
+    # @api private
+    def get_cache(key, source)
+       if ! source
+         cache_dir = '/etc/facter/facts.d'
+         if Puppet.features.external_facts?
+           for dir in Facter.search_external_path
+             # the plugin facts directory in /var/lib is cleaned each run
+             if (File.exist?(dir)) #and
+               #dir != '/var/lib/puppet/facts.d' and
+               #dir != '/opt/puppetlabs/puppet/cache/facts.d/') # PE 2015 location
+               cache_dir = dir
+               break
+             end
            end
          end
+         keystring = key.to_s
+         cache_file = "#{cache_dir}/#{keystring}.yaml"
+       else
+           cache_dir = nil
+           cache_file = source
        end
-       cache_file = "#{cache_dir}/#{key.to_s}.yaml"
-     else
-         cache_dir = nil
-         cache_file = source
-     end
-     {:file => cache_file, :dir => cache_dir }
-   end
+       {:file => cache_file, :dir => cache_dir }
+    end
   end
 end
