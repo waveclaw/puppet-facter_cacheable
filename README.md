@@ -29,6 +29,7 @@ A well-maintained cache can:
  * store values reachable outside of Puppet agent runs
  * explicitly control schedule of fact refreshing
 
+
  There is limited planned support in Facter 2.0 and later for controlling some
  caching of Puppet facts.  Personally this developer has never seen it in the
  wild.
@@ -112,6 +113,60 @@ the documentation.
 YAML stored values may appear as arrays or string-indexed hashes depending on
 the version of Puppet and Facter involved.  Unpacking those is left as an
 exercise for the reader.
+
+### Testing Code
+
+To test code that uses Facter\_cacheable you will have to resort to a little
+used [method for stubbing objects](https://github.com/rspec/rspec-mocks).
+
+In your Facter fact, guard against import of the module which will fail if you
+do not have it deployed to the Puppet environment on which the tests are running.
+
+Note: even the rSpec setup will not properly install this utility for testing.
+
+```ruby
+begin
+    require 'facter/util/facter_cacheable'
+  rescue LoadError => e
+    Facter.debug("#{e.backtrace[0]}: #{$!}.")
+end
+# regular fact like the complete example above
+```
+
+In the rSpec Facter tests, normally some kind of function test on
+`Facter.value()`, setup a harness which can check for invocation of the cache
+functions.
+
+```ruby
+context 'test caching' do
+  let(:fake_class) { Class.new }
+  before :each do
+    allow(File).to receive(:exist?).and_call_original
+    allow(Puppet.features).to receive(:facter_cacheable?) { true }
+    Facter.clear
+  end
+  it 'should return and save a computed value with an empty cache' do
+    stub_const("Facter::Util::Facter_cacheable", fake_class)
+    expect(Facter::Util::Facter_cacheable).to receive(:cached?).with(
+    :my_fact, 24 * 3600) { nil }
+    expect(Facter::Util::Resolution).to receive(:exec).with(
+    'some special comand') { mydata }
+    expect(Facter::Util::Facter_cacheable).to receive(:cache).with(
+      :my_fact, mydata)
+    expect(Facter.value(:my_fact).to eq(mydata)
+  end
+  it 'should return a cached value with a full cache' do
+    stub_const("Facter::Util::Facter_cacheable", fake_class)
+    expect(Facter::Util::Facter_cacheable).to receive(:cached?).with(
+    :my_fact, 24 * 3600) { mydata }
+    expect(mod).to_not receive(:my_fact)
+    expect(Facter.value(:my_fact)).to eq(mydata)
+  end
+end
+```
+
+The key parts are the `:fake_class` and the `stub_const()` calls.  These setup
+a kind of double that can be used by rSpec to hook into the Facter context.
 
 ## Reference
 
