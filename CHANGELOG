@@ -1,5 +1,6 @@
 2016-05-16 Release 0.1.1
 - Update documentation with examples for testing
+- Drop ruby 1.8.7 for rake requires 1.9.3 or later now
 
 2016-05-13 Release 0.1.0
 - fork module from subscription_manager
