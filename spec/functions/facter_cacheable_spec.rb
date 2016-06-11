@@ -8,17 +8,32 @@
 #
 
 require 'spec_helper'
-require 'facter/util/facter_cacheable'
 require 'stringio'
 require 'yaml'
 require 'time'
+require 'facter'
+require 'facter/util/facter_cacheable'
 
-data = {
+default_data = {
   :single => "--- \n  string_value: tested",
   :list_like   => "--- \n  list_value: \n    - thing1\n    - thing2",
   :hash_like   =>
     "--- \n  hash_value: \n    alpha: one\n    beta: two\n    tres: three",
 }
+
+puppet_6 = {
+  :single => "---\nstring_value: tested",
+  :list_like   => "---\n  list_value:\n    - thing1\n    - thing2\n",
+  :hash_like   =>
+    "---\n  hash_value:\n    alpha: one\n    beta: two\n    tres: three\n",
+}
+
+case Facter.value(:puppetversion)
+ when '3.6.0'
+   data = puppet_6
+ else
+   data = default_data
+ end
 
 # YAML.load* does not return symbols as hash keys!
 expected = {
