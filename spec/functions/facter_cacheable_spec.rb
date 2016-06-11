@@ -29,7 +29,7 @@ puppet_6 = {
 }
 
 case Facter.value(:puppetversion)
- when '3.6.0'
+ when '3.6.0', '4.4.2'
    data = puppet_6
  else
    data = default_data
