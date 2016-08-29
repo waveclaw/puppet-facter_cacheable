@@ -20,6 +20,8 @@
 facter\_cacheable implements a Puppet feature for Facter that caches fact values
 for a given time.
 
+> This does not work correctly with Puppet Enterprise 2016 as it purges the puginsynced facts directory on each run.
+
 ## Module Description
 
 As mentioned in many getting started with Puppet guides, including some by
@@ -178,8 +180,10 @@ a kind of double that can be used by rSpec to hook into the Facter context.
 
 ## Limitations
 
-Supports Puppet 3.3.0 - 4.4.2.  Tested on AIX, recent vintage Solaris, SuSE,
+Supports F/OSS Puppet 3.3.0 - 4.0.0.  Tested on AIX, recent vintage Solaris, SuSE,
 RedHat and RedHat-derivatives.
+
+Does not support Puppet Enterprise due to the cached value wipe on each run.
 
 Don't be surprised if is works elsewhere, too.  Or if it sets you house on fire.
 
