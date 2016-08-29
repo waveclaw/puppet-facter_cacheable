@@ -15,7 +15,6 @@ require 'facter'
 require 'facter/util/facter_cacheable'
 
 #
-# begin the stupid section for yaml verses string comparison
 #  The alternative is to rig up some 'approximate' validation and compare
 #  methodology inside of rSpec
 #
@@ -34,7 +33,7 @@ puppet_360 = {
 }
 
 puppet_442 = {
-  :single2=> "---\nstring_value: tested\n",
+  :single => "---\nstring_value: tested\n",
   :list_like   => "---\nlist_value:\n- thing1\n- thing2\n",
   :hash_like   =>
     "---\nhash_value:\n  alpha: one\n  beta: two\n  tres: three\n",
@@ -47,10 +46,7 @@ case Facter.value(:puppetversion)
    data = puppet_360
  else
    data = default_data
- end
-#
-# end the stupidity
-#
+end
 
 # YAML.load* does not return symbols as hash keys!
 expected = {
