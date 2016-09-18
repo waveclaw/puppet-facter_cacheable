@@ -65,8 +65,15 @@ EOF
          cache_file = mycache[:file]
          cache_dir = mycache[:dir]
          begin
-           if !File::exist?(cache_dir)
-                Dir.mkdir(cache_dir)
+           # Changed to recursively create directories for facts.
+           if !File::exist?(cache_dir) 
+             recursive = cache_dir.split('/')
+             directory = ''
+             recursive.each do |sub_directory|
+               directory += sub_directory + '/'
+               Dir.mkdir(directory) unless (File::directory?(directory))
+             end
+             # Dir.mkdir(cache_dir)
            end
            # don't use the Rubyist standard pattern so we can test with rspec
            out = File.open(cache_file, 'w')
@@ -88,9 +95,9 @@ EOF
          if Puppet.features.external_facts?
            for dir in Facter.search_external_path
              # the plugin facts directory in /var/lib is cleaned each run
-             if (File.exist?(dir)) #and
-               #dir != '/var/lib/puppet/facts.d' and
-               #dir != '/opt/puppetlabs/puppet/cache/facts.d/') # PE 2015 location
+             # Exclude default pluginsync directory for PE 2016.2
+             if ((File.exist?(dir)) and (dir != '/opt/puppetlabs/puppet/cache/facts.d'))
+		#dir != '/var/lib/puppet/facts.d' and
                cache_dir = dir
                break
              end
