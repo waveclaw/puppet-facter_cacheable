@@ -20,6 +20,8 @@
 facter\_cacheable implements a Puppet feature for Facter that caches fact values
 for a given time.
 
+The features are inspired by the [Puppet Blog on Facter](https://puppet.com/blog/facter-part-3-caching-and-ttl) from 2010.
+
 > This does not work correctly with Puppet Enterprise 2016 as it purges the puginsynced facts directory on each run.
 
 ## Module Description
