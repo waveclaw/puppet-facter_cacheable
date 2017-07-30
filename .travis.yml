@@ -4,21 +4,21 @@ bundler_args: --without development system_tests
 before_install: rm Gemfile.lock || true
 
 # drop support for ruby 1.9.3 due to json_pure
+# dropped support for 2.0.0 since deprication warning causes Travis CI failures
+
 rvm:
-  - 2.0.0
   - 2.1.5
   - 2.1.9
 
 script: bundle exec rake test
 
+# drop support for very old 3.x series of Puppet
 env:
   matrix:
-    - PUPPET_GEM_VERSION="~> 3.2"
-    - PUPPET_GEM_VERSION="~> 3.7"
     - PUPPET_GEM_VERSION="~> 3.8"
     - PUPPET_GEM_VERSION="~> 4.8.0" # PE 201x.y.z
     - PUPPET_GEM_VERSION="~> 4.10.4" # Latest 2017-07-20
-    
+
 addons:
       code_climate:
                 repo_token: 1d699cad8d8d5a2ebbe437105276e862e3acd77fbd635a7225c50476b36e8c5a
