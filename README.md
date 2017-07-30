@@ -17,12 +17,13 @@
 
 ## Overview
 
-facter\_cacheable implements a Puppet feature for Facter that caches fact values
-for a given time.
+facter\_cacheable implements a Puppet feature for Facter that caches fact values for a given time.
 
 The features are inspired by the [Puppet Blog on Facter](https://puppet.com/blog/facter-part-3-caching-and-ttl) from 2010.
 
-> This does not work correctly with Puppet Enterprise 2016 as it purges the puginsynced facts directory on each run.
+> This does not always work correctly with Puppet Enterprise 2016.
+> PE purges pugin-synced facts directories on each run.
+> This removes fact files Puppet's agent thinks came from custom facts.
 
 ## Module Description
 
@@ -34,18 +35,17 @@ A well-maintained cache can:
  * explicitly control schedule of fact refreshing
 
 
- There is limited planned support in Facter 2.0 and later for controlling some
- caching of Puppet facts.  Personally this developer has never seen it in the
- wild.
+There is limited planned support in Facter 2.0 and later for controlling some
+caching of Puppet facts.  Personally this developer has never seen issues with it in the wild.
 
- No, this is not yet-another-varnish module either.
+No, this is not yet-another-varnish module either.
 
 ## Setup
 
 ### What facter\_cacheable affects
 
-Deploys a feature, facter\_cacheable, which is accessed by a custom fact written
-by a developer.
+Deploys a feature, facter\_cacheable, which is usable for custom facts written
+by Puppet developers.
 
 ### Setup Requirements
 
@@ -55,12 +55,13 @@ PluginSync must be enabled on at least one Puppet agent run to deploy the module
 
 ## Usage
 
-This module accepts no customization.  The facter\_cache call takes options for
-only the value to cache, the time-to-live(ttl) and an optional format to store
-the cache in.
+This module accepts no customization.  The `facter\_cache()` call takes options for:
+ * the value to cache
+ * a time-to-live(ttl) 
+ * an optional location to store the cache in.
 
-If the directories containing the cache files do not exist, the module will _not_
-create them.  That is left to the discretion of the end user.
+If the directories containing the cache files do not exist, the module will attempt to
+create them. 
 
 To cache a value use `cache`:
 ```
@@ -80,6 +81,7 @@ Facter::Util::Facter_cacheable.cached?(
   ttl_in_seconds,
   optional_cache_file)
 ```
+
 *Complete Example*
 
 ```
@@ -111,8 +113,8 @@ end
 ```
 
 It is not required but encouraged to keep the name of the cache and fact
-consistent. Although with all Ruby programming, sanity is optional. Just like
-the documentation.
+the same. Although with all Ruby programming sanity is optional as it 
+having documentation.
 
 YAML stored values may appear as arrays or string-indexed hashes depending on
 the version of Puppet and Facter involved.  Unpacking those is left as an
@@ -123,7 +125,7 @@ exercise for the reader.
 To test code that uses Facter\_cacheable you will have to resort to a little
 used [method for stubbing objects](https://github.com/rspec/rspec-mocks).
 
-In your Facter fact, guard against import of the module which will fail if you
+In your Facter fact guard against import of the module.  Import will fail if you
 do not have it deployed to the Puppet environment on which the tests are running.
 
 Note: even the rSpec setup will not properly install this utility for testing.
@@ -187,7 +189,7 @@ RedHat and RedHat-derivatives.
 
 Does not support Puppet Enterprise due to the cached value wipe on each run.
 
-Don't be surprised if is works elsewhere, too.  Or if it sets you house on fire.
+Don't be surprised if is works elsewhere, too.  Or if it sets your house on fire.
 
 The name of this module, facter\_cacheable, was chosen to not conflict with other
 existing implementations such as the `Facter::Util::Cacheable` support in early
