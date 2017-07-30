@@ -40,7 +40,7 @@ puppet_442 = {
 }
 
 case Facter.value(:puppetversion)
- when '4.4.2'
+when '4.4.2', '4.8.0', '4.9.0', '4.10.5'
    data = puppet_442
  when '3.6.0'
    data = puppet_360
