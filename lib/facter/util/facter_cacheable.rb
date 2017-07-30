@@ -66,7 +66,7 @@ EOF
          cache_dir = mycache[:dir]
          begin
            # Changed to recursively create directories for facts.
-           if !File::exist?(cache_dir) 
+           if !cache_dir.nil? && !File::exist?(cache_dir) 
              recursive = cache_dir.split('/')
              directory = ''
              recursive.each do |sub_directory|
