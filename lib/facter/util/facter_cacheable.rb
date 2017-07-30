@@ -66,7 +66,7 @@ EOF
          cache_dir = mycache[:dir]
          begin
            # Changed to recursively create directories for facts.
-           if !cache_dir.nil? && !File::exist?(cache_dir) 
+           if !cache_dir.nil? && !File::exist?(cache_dir)
              recursive = cache_dir.split('/')
              directory = ''
              recursive.each do |sub_directory|
@@ -90,6 +90,9 @@ EOF
     # @return file [string, string] The cachefile location
     # @api private
     def get_cache(key, source)
+       if ! key
+         raise ArgumentError, 'No key was provided to check'
+       end
        if ! source
          cache_dir = '/etc/facter/facts.d'
          if Puppet.features.external_facts?
@@ -106,7 +109,7 @@ EOF
          keystring = key.to_s
          cache_file = "#{cache_dir}/#{keystring}.yaml"
        else
-           cache_dir = nil
+           cache_dir = File.dirname(source)
            cache_file = source
        end
        {:file => cache_file, :dir => cache_dir }

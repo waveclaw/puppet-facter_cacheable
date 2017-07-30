@@ -129,36 +129,93 @@ data.keys.each { |testcase|
 end
 
 describe "Facter::Util::Facter_cacheable.cache", :type => :function do
-data.keys.each { |testcase|
-  result = StringIO.new('')
-  key = (expected[testcase].keys)[0]
-  value = expected[testcase][key]
-  cache = "/tmp/#{key}.yaml"
-  it "should store a #{testcase.to_s} value in YAML" do
-    expect(Puppet.features).to receive(:external_facts?) { true }
-    expect(Facter).to receive(:search_external_path) { ['/tmp'] }
-    expect(File).to receive(:exist?).with('/tmp') { true } # get_cache
-    expect(File).to receive(:exist?).with('/tmp') { true } # mk missing dir
-    # cannot do this test with a lambda like the File.open block passed in
-    expect(File).to receive(:open).with(cache, 'w') { result }
-    # WTF? called 785 times?
-    #expect(YAML).to receive(:dump).with({ key => value }, result) {
-    #    YAML.dump({ key => value }, result)
-    #}
-    Facter::Util::Facter_cacheable.cache(key, value)
-    expect(result.string).to eq(data[testcase])
-  end
-}
-  context "for garbage values" do
-    it "should output nothing" do
+  data.keys.each { |testcase|
+    result = StringIO.new('')
+    key = (expected[testcase].keys)[0]
+    value = expected[testcase][key]
+    cache = "/tmp/#{key}.yaml"
+    it "should store a #{testcase.to_s} value in YAML" do
+      expect(Facter::Util::Facter_cacheable).to receive(:get_cache) {
+        {:dir => '/tmp', :file => cache }
+      }
+      expect(File).to receive(:open).with(cache, 'w') { result }
+      # WTF? called 785 times?
+      #expect(YAML).to receive(:dump).with({ key => value }, result) {
+      #    YAML.dump({ key => value }, result)
+      #}
+      Facter::Util::Facter_cacheable.cache(key, value)
+      expect(result.string).to eq(data[testcase])
+    end
+  }
+  context "for garbage input values" do
+    it "should sliently output nothing" do
       result = StringIO.new('')
       cache = "/tmp/.yaml"
-      expect(Puppet.features).to_not receive(:external_facts?) { true }
-      expect(Facter).to_not receive(:search_external_path) { ['/tmp'] }
-      expect(File).to_not receive(:exist?).with('/tmp') { true }
+      expect(Facter::Util::Facter_cacheable
+       ).to_not receive(:get_cache).and_call_original
       expect(File).to_not receive(:open).with(cache, 'w') { result }
       Facter::Util::Facter_cacheable.cache(nil, nil)
       expect(result.string).to eq('')
     end
+  end
+  #
+  # this tests use of an internal helper function instead of overall logic
+  #
+  context "if getting a cache's location fails" do
+    it "should skip trying to make that location" do
+      result = StringIO.new('')
+      cache = "/tmp/.yaml"
+      expect(Facter::Util::Facter_cacheable).to receive(:get_cache) {
+      { :dir => nil, :file => cache } }
+      expect(File).to_not receive(:exist?).with(nil)
+      expect(Dir).to_not receive(:mkdir)
+      expect(File).to receive(:open).with(cache, 'w') { result }
+      Facter::Util::Facter_cacheable.cache('', '')
+      expect(result.string).to eq("---\n'': ''\n")
+    end
+  end
+end
+
+#
+# this tests an internal helper function instead of overall logic
+#
+describe "Facter::Util::Facter_cacheable.get_cache", :type => :function do
+  it "should return a dir for a key and directory" do
+    result = Facter::Util::Facter_cacheable.get_cache('foo', '/foo/bar')
+    expect(result).to eq({:file => '/foo/bar', :dir => '/foo' })
+  end
+  it "should return current dir for a key with a directory" do
+    result = Facter::Util::Facter_cacheable.get_cache('foo', 'bar')
+    expect(result).to eq({:file => 'bar', :dir => '.' })
+  end
+  it "should return the default path path for no source" do
+    default_path = '/etc/facter/facts.d'
+    expect(Puppet.features).to receive(:external_facts?) { false }
+    result = Facter::Util::Facter_cacheable.get_cache('foo', nil)
+    expect(result).to eq(
+      {:file => "#{default_path}/foo.yaml", :dir => default_path })
+  end
+  it "should return a dir for a key and no directory" do
+    expect(Puppet.features).to receive(:external_facts?) { true }
+    expect(Facter).to receive(:search_external_path) { ['/tmp'] }
+    result = Facter::Util::Facter_cacheable.get_cache('foo', nil)
+    expect(result).to eq({:file => '/tmp/foo.yaml', :dir => '/tmp'})
+  end
+  it "should check all paths when there are many" do
+    expect(Puppet.features).to receive(:external_facts?) { true }
+    expect(Facter).to receive(:search_external_path) { ['/a', 'b', '/tmp' ] }
+    expect(File).to receive(:exist?).with('/a') { false }
+    expect(File).to receive(:exist?).with('b') { false }
+    expect(File).to receive(:exist?).with('/tmp') { true }
+    result = Facter::Util::Facter_cacheable.get_cache('foo', nil)
+    expect(result).to eq({:file => '/tmp/foo.yaml', :dir => '/tmp'})
+  end
+  it "should return an error for no key" do
+    expect {
+      Facter::Util::Facter_cacheable.get_cache(nil, nil)
+    }.to raise_error(ArgumentError, /No key/)
+    expect {
+      Facter::Util::Facter_cacheable.get_cache(nil, 'foo')
+    }.to raise_error(ArgumentError, /No key/)
   end
 end
