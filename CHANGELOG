@@ -1,3 +1,6 @@
+2017-10-23 Release 0.2.1
+- Use exit? for puppet/file_system
+
 2016-05-16 Release 0.1.1
 - Update documentation with examples for testing
 - Drop ruby 1.8.7 for rake requires 1.9.3 or later now

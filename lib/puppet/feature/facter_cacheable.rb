@@ -22,7 +22,7 @@ Puppet.features.add(:facter_cacheable) do
   else
     # use default
     if !Puppet::Util::Platform.windows?
-      Puppet::FileSystem.exist('/var/lib/puppet/facts.d')
+      Puppet::FileSystem.exist?('/var/lib/puppet/facts.d')
     end
   end
 end

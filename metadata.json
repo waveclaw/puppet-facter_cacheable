@@ -1,6 +1,6 @@
 {
   "name": "waveclaw-facter_cacheable",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "JD Powell <waveclaw@hotmail.com>",
   "summary": "Provide a Cache for Facter facts",
   "license": "Apache-2.0",
@@ -26,23 +26,22 @@
   {
     "operatingsystem":"SLES",
     "operatingsystemrelease":[
-      "11.0",
       "12.1",
-      "12.2"
+      "12.2",
+      "12.3"
     ]
   },
   {
     "operatingsystem":"openSUSE",
     "operatingsystemrelease":[
-      "13.1",
-      "13.2",
-      "42.1"
+      "42.1",
+      "42.2",
+      "42.3"
     ]
   },
   {
     "operatingsystem":"RedHat",
     "operatingsystemrelease":[
-      "5.0",
       "6.0",
       "7.0"
     ]
@@ -50,7 +49,6 @@
   {
     "operatingsystem":"CentOS",
     "operatingsystemrelease":[
-      "5.0",
       "6.0",
       "7.0"
     ]
@@ -58,7 +56,6 @@
   {
     "operatingsystem":"Scientific",
     "operatingsystemrelease":[
-      "5.0",
       "6.0",
       "7.0"
     ]
