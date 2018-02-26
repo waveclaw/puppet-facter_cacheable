@@ -14,7 +14,7 @@ require 'facter'
 Puppet.features.add(:facter_cacheable) do
   require 'time'
   require 'yaml'
-  if Puppet.features.external_facts?
+  if (Puppet::Util::Package.versioncmp(Puppet.version, "5.0.0") > 0) or Puppet.features.external_facts?
     # use external location
     for dir in Facter.search_external_path
       Puppet::FileSystem.exist?(dir)
