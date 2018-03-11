@@ -1,6 +1,6 @@
 {
   "name": "waveclaw-facter_cacheable",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "JD Powell <waveclaw@hotmail.com>",
   "summary": "Provide a Cache for Facter facts",
   "license": "Apache-2.0",
