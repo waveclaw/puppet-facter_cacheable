@@ -27,7 +27,7 @@ group :system_tests do
   gem "beaker", "~> 2.0"
   gem "beaker-rspec", "~> 5.6"
   # lock nokogirii
-  gem "nokogiri", "1.6.8"
+  gem "nokogiri", "1.8.1"
   else
   gem "beaker"
   gem "beaker-rspec"
