@@ -14,39 +14,18 @@ require 'time'
 require 'facter'
 require 'facter/util/facter_cacheable'
 
-#
-#  The alternative is to rig up some 'approximate' validation and compare
-#  methodology inside of rSpec
-#
-default_data = {
+data = {
   :single => "--- \n  string_value: tested",
   :list_like   => "--- \n  list_value: \n    - thing1\n    - thing2",
   :hash_like   =>
     "--- \n  hash_value: \n    alpha: one\n    beta: two\n    tres: three",
 }
 
-puppet_360 = {
-  :single => "---\nstring_value: tested",
-  :list_like   => "---\n  list_value:\n    - thing1\n    - thing2\n",
-  :hash_like   =>
-    "---\n  hash_value:\n    alpha: one\n    beta: two\n    tres: three\n",
+# reformat each of the keys using the local YAML format convention
+# this is needed do to spacing changes between Ruby 1.9, 2.0 and 2.1.
+data.keys.each { |testcase|
+  data[testcase] = YAML.dump(YAML.load(data[testcase]))
 }
-
-puppet_442 = {
-  :single => "---\nstring_value: tested\n",
-  :list_like   => "---\nlist_value:\n- thing1\n- thing2\n",
-  :hash_like   =>
-    "---\nhash_value:\n  alpha: one\n  beta: two\n  tres: three\n",
-}
-
-case Facter.value(:puppetversion)
-when '4.4.2', '4.8.0', '4.9.0', '4.10.5'
-   data = puppet_442
- when '3.6.0'
-   data = puppet_360
- else
-   data = default_data
-end
 
 # YAML.load* does not return symbols as hash keys!
 expected = {
@@ -128,7 +107,7 @@ data.keys.each { |testcase|
   end
 end
 
-describe "Facter::Util::Facter_cacheable.cache", :type => :function do
+describe "Facter::Util::Facter_cacheable.cache", :type => :fact do
   data.keys.each { |testcase|
     result = StringIO.new('')
     key = (expected[testcase].keys)[0]
@@ -179,7 +158,7 @@ end
 #
 # this tests an internal helper function instead of overall logic
 #
-describe "Facter::Util::Facter_cacheable.get_cache", :type => :function do
+describe "Facter::Util::Facter_cacheable.get_cache", :type => :fact do
   it "should return a dir for a key and directory" do
     result = Facter::Util::Facter_cacheable.get_cache('foo', '/foo/bar')
     expect(result).to eq({:file => '/foo/bar', :dir => '/foo' })
