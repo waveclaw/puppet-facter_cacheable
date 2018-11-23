@@ -1,65 +1,76 @@
 {
   "name": "waveclaw-facter_cacheable",
-  "version": "0.2.2",
+  "version": "1.0.0",
   "author": "JD Powell <waveclaw@hotmail.com>",
   "summary": "Provide a Cache for Facter facts",
   "license": "Apache-2.0",
   "source": "https://github.com/waveclaw/puppet-facter_cacheable",
   "project_page": "https://github.com/waveclaw/puppet-facter_cacheable",
   "issues_url": "https://github.com/waveclaw/puppet-facter_cacheable/issues",
-  "operatingsystem_support": [
-  {
-    "operatingsystem":"AIX",
-    "operatingsystemrelease":[
-      "5.3",
-      "6.1",
-      "7.1"
-    ]
-  },
-  {
-    "operatingsystem":"Solaris",
-    "operatingsystemrelease":[
-      "5.10",
-      "5.11"
-    ]
-  },
-  {
-    "operatingsystem":"SLES",
-    "operatingsystemrelease":[
-      "12.1",
-      "12.2",
-      "12.3"
-    ]
-  },
-  {
-    "operatingsystem":"openSUSE",
-    "operatingsystemrelease":[
-      "42.1",
-      "42.2",
-      "42.3"
-    ]
-  },
-  {
-    "operatingsystem":"RedHat",
-    "operatingsystemrelease":[
-      "6.0",
-      "7.0"
-    ]
-  },
-  {
-    "operatingsystem":"CentOS",
-    "operatingsystemrelease":[
-      "6.0",
-      "7.0"
-    ]
-  },
-  {
-    "operatingsystem":"Scientific",
-    "operatingsystemrelease":[
-      "6.0",
-      "7.0"
-    ]
-  }
+  "dependencies": [
+
   ],
-  "dependencies": [ ]
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "AIX",
+      "operatingsystemrelease": [
+        "5.3",
+        "6.1",
+        "7.1"
+      ]
+    },
+    {
+      "operatingsystem": "Solaris",
+      "operatingsystemrelease": [
+        "5.10",
+        "5.11"
+      ]
+    },
+    {
+      "operatingsystem": "SLES",
+      "operatingsystemrelease": [
+        "12.1",
+        "12.2",
+        "12.3"
+      ]
+    },
+    {
+      "operatingsystem": "openSUSE",
+      "operatingsystemrelease": [
+        "42.1",
+        "42.2",
+        "42.3"
+      ]
+    },
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6.0",
+        "7.0"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6.0",
+        "7.0"
+      ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [
+        "6.0",
+        "7.0"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.0 < 7.0.0"
+    }
+  ],
+  "pdk-version": "1.7.1",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "1.7.1-0-g810b982"
 }

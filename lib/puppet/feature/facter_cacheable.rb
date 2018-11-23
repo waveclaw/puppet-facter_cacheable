@@ -1,4 +1,6 @@
 #!/usr/bin/ruby
+# frozen_string_literal: true
+
 #
 #  Puppet feature for the facter_cachable utility
 #
@@ -14,14 +16,14 @@ require 'facter'
 Puppet.features.add(:facter_cacheable) do
   require 'time'
   require 'yaml'
-  if (Puppet::Util::Package.versioncmp(Puppet.version, "5.0.0") > 0) or Puppet.features.external_facts?
+  if Puppet::Util::Package.versioncmp(Puppet.version, '5.0.0').positive? || Puppet.features.external_facts?
     # use external location
-    for dir in Facter.search_external_path
+    Facter.search_external_path.each do |dir|
       Puppet::FileSystem.exist?(dir)
     end
   else
     # use default
-    if !Puppet::Util::Platform.windows?
+    unless Puppet::Util::Platform.windows?
       Puppet::FileSystem.exist?('/var/lib/puppet/facts.d')
     end
   end

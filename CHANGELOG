@@ -1,3 +1,7 @@
+2018-11-23 Release 1.0.0
+- Rename class to follow Rubocop standards
+- PDK 1.7.1 compatibility
+
 2017-10-23 Release 0.2.1
 - Use exit? for puppet/file_system
 
