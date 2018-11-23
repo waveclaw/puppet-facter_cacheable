@@ -57,16 +57,16 @@ PluginSync must be enabled on at least one Puppet agent run to deploy the module
 
 This module accepts no customization.  The `facter\_cache()` call takes options for:
  * the value to cache
- * a time-to-live(ttl) 
+ * a time-to-live(ttl)
  * an optional location to store the cache in.
 
 If the directories containing the cache files do not exist, the module will attempt to
-create them. 
+create them.
 
 To cache a value use `cache`:
 ```
 require 'facter/util/facter_cacheable'
-Facter::Util::Facter_cacheable.cache(
+Facter::Util::FacterCacheable.cache(
   :fact_name_symbol,
   some_value,
   optional_cache_file
@@ -76,7 +76,7 @@ Facter::Util::Facter_cacheable.cache(
 To return a cached value use `cached?`:
 ```
 require 'facter/util/facter_cacheable'
-Facter::Util::Facter_cacheable.cached?(
+Facter::Util::FacterCacheable.cached?(
   :fact_name_symbol,
   ttl_in_seconds,
   optional_cache_file)
@@ -97,11 +97,11 @@ Facter.add(:my_custom_fact) do
   end
   setcode do
     # 24 * 3600 = 1 day of seconds
-    cache = Facter::Util::Facter_cacheable.cached?(:my_custom_fact, 24 * 3600)
+    cache = Facter::Util::FacterCacheable.cached?(:my_custom_fact, 24 * 3600)
     if ! cache
       my_value = some_expensive_operation()
       # store the value for later
-      Facter::Util::Facter_cacheable.cache(:my_custom_fact, my_value)
+      Facter::Util::FacterCacheable.cache(:my_custom_fact, my_value)
       # return the expensive value
       my_value
     else
@@ -113,7 +113,7 @@ end
 ```
 
 It is not required but encouraged to keep the name of the cache and fact
-the same. Although with all Ruby programming sanity is optional as it 
+the same. Although with all Ruby programming sanity is optional as it
 having documentation.
 
 YAML stored values may appear as arrays or string-indexed hashes depending on
@@ -152,18 +152,18 @@ context 'test caching' do
     Facter.clear
   end
   it 'should return and save a computed value with an empty cache' do
-    stub_const("Facter::Util::Facter_cacheable", fake_class)
-    expect(Facter::Util::Facter_cacheable).to receive(:cached?).with(
+    stub_const("Facter::Util::FacterCacheable", fake_class)
+    expect(Facter::Util::FacterCacheable).to receive(:cached?).with(
     :my_fact, 24 * 3600) { nil }
     expect(Facter::Util::Resolution).to receive(:exec).with(
     'some special comand') { mydata }
-    expect(Facter::Util::Facter_cacheable).to receive(:cache).with(
+    expect(Facter::Util::FacterCacheable).to receive(:cache).with(
       :my_fact, mydata)
     expect(Facter.value(:my_fact).to eq(mydata)
   end
   it 'should return a cached value with a full cache' do
-    stub_const("Facter::Util::Facter_cacheable", fake_class)
-    expect(Facter::Util::Facter_cacheable).to receive(:cached?).with(
+    stub_const("Facter::Util::FacterCacheable", fake_class)
+    expect(Facter::Util::FacterCacheable).to receive(:cached?).with(
     :my_fact, 24 * 3600) { mydata }
     expect(mod).to_not receive(:my_fact)
     expect(Facter.value(:my_fact)).to eq(mydata)
