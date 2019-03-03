@@ -49,6 +49,8 @@ by Puppet developers.
 
 ### Setup Requirements
 
+caching using this module requires at lest Ruby 2.3 and Puppet 4.7. Older releases cannot even run the test harness anymore.
+
 PluginSync must be enabled on at least one Puppet agent run to deploy the module.
 
 ### Beginning with facter\_cacheable
@@ -184,8 +186,7 @@ a kind of double that can be used by rSpec to hook into the Facter context.
 
 ## Limitations
 
-Supports F/OSS Puppet 3.3.0 - 4.0.0.  Tested on AIX, recent vintage Solaris, SuSE,
-RedHat and RedHat-derivatives.
+Supports F/OSS Puppet 4.7.0+.  Tested on AIX, recent vintage Solaris, SuSE, RedHat and RedHat-derivatives.
 
 Does not support Puppet Enterprise due to the cached value wipe on each run.
 
