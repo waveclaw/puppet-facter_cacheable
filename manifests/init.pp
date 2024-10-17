@@ -13,7 +13,7 @@
 #  Warn on unsupported operatingsytems
 #
 class facter_cacheable {
-  if $::osfamily == 'Microsoft' {
-    fail("${::operatingsystem} is not supported.")
+  if $facts['os']['family'] == 'Microsoft' {
+    fail("${facts['os']['name']} is not supported.")
   }
 }

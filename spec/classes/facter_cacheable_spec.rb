@@ -9,7 +9,7 @@ describe 'facter_cacheable' do
         let(:params) { {} }
         let(:facts) do
           {
-            osfamily: osfamily,
+            os: {family: osfamily},
           }
         end
 
@@ -23,8 +23,7 @@ describe 'facter_cacheable' do
     describe 'facter_cacheable class without any parameters on Windows' do
       let(:facts) do
         {
-          osfamily: 'Microsoft',
-          operatingsystem: 'Windows',
+          os: {family: 'Microsoft', name: 'Windows'},
         }
       end
       let(:params) { {} }
