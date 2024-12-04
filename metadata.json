@@ -1,6 +1,6 @@
 {
   "name": "waveclaw-facter_cacheable",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "JD Powell <waveclaw@hotmail.com>",
   "summary": "Provide a Cache for Facter facts",
   "license": "Apache-2.0",
@@ -31,7 +31,9 @@
       "operatingsystemrelease": [
         "12.1",
         "12.2",
-        "12.3"
+        "12.3",
+        "12.4",
+        "12.5"
       ]
     },
     {
@@ -39,21 +41,31 @@
       "operatingsystemrelease": [
         "42.1",
         "42.2",
-        "42.3"
+        "42.3",
+        "15.0",
+        "15.1",
+        "15.2",
+        "15.3",
+        "15.4",
+        "15.5"
       ]
     },
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "6.0",
-        "7.0"
+        "7.0",
+        "8.0",
+        "9.0"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
         "6.0",
-        "7.0"
+        "7.0",
+        "8.0",
+        "9.0"
       ]
     },
     {
@@ -67,10 +79,10 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.10.12 < 7.0.0"
+      "version_requirement": ">= 4.10.12 < 8.0.0"
     }
   ],
-  "pdk-version": "1.10.0",
-  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
-  "template-ref": "1.10.0-0-gbba9ac3"
+  "pdk-version": "3.3.0",
+  "template-url": "pdk-default#3.3.0",
+  "template-ref": "tags/3.3.0-0-g5d17ec1"
 }

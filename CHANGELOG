@@ -1,3 +1,7 @@
+2024-12-24 Release 1.1.2
+ - Update PDK to 3.3.3
+ - Update tested Platform support
+
 2020-02-28 Release 1.1.1
  - Handle newer Travis testing with PDK examples
 
